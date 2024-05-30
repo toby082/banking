@@ -2,7 +2,7 @@
 
 import { cookies } from "next/headers";
 import { createAdminClient, createSessionClient } from "../appwrite";
-import { ID } from "node-appwrite"
+import { ID, Query } from "node-appwrite";
 import { encryptId, extractCustomerIdFromUrl, parseStringify } from "../utils";
 import { CountryCode, ProcessorTokenCreateRequest, ProcessorTokenCreateRequestProcessorEnum, Products } from "plaid";
 import { plaidClient } from "@/lib/plaid";
@@ -14,6 +14,22 @@ const {
     APPWRITE_USER_COLLECTION_ID: USER_COLLECTION_ID,
     APPWRITE_BANK_COLLECTION_ID: BANK_COLLECTION_ID,
 } = process.env;
+
+export const getUserInfo = async ({ userId }: getUserInfoProps) => {
+    try {
+        const { database } = await createAdminClient();
+
+        const user = await database.listDocuments(
+            DATABASE_ID!,
+            USER_COLLECTION_ID!,
+            [Query.equal('userId', [userId])]
+        )
+
+        return parseStringify(user.documents[0]);
+    } catch (error) {
+        console.log(error)
+    }
+}
 
 export const signIn = async ({ email, password }: signInProps) => {
     try {
@@ -77,7 +93,7 @@ export const signUp = async ({ password, ...userData }: SignUpParams) => {
         return parseStringify(newUser);
 
     } catch (error) {
-
+        console.error('Error', error);
     }
 }
 
@@ -85,10 +101,13 @@ export const signUp = async ({ password, ...userData }: SignUpParams) => {
 export async function getLoggedInUser() {
     try {
         const { account } = await createSessionClient();
-        const user = await account.get();
-        return parseStringify(user);
+        const result = await account.get();
 
+        const user = await getUserInfo({ userId: result.$id })
+
+        return parseStringify(user);
     } catch (error) {
+        console.log(error)
         return null;
     }
 }

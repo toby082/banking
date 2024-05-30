@@ -5,7 +5,6 @@ import React from 'react';
 const SignUp = async () => {
   const loggedInuser = await getLoggedInUser();
   console.log(
-    '[Debug] ~ file: page.tsx:7 ~ SignUp ~ loggedInuser:',
     loggedInuser
   );
 
