@@ -16,6 +16,7 @@ import { sidebarLinks } from '@/constants';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import Footer from './Footer';
+import PlaidLink from './PlaidLink';
 
 const MobileNav = ({ user }: MobileNavProps) => {
   const pathname = usePathname();
@@ -41,10 +42,10 @@ const MobileNav = ({ user }: MobileNavProps) => {
               src="/icons/logo.svg"
               width={34}
               height={34}
-              alt="Horizon logo"
+              alt="T-Bank logo"
             ></Image>
             <h1 className="text-26 font-ibm-plex-serif font-bold text-black-1">
-              Horizon
+              T-Bank
             </h1>
           </Link>
           <div className="mobilenav-sheet">
@@ -53,7 +54,7 @@ const MobileNav = ({ user }: MobileNavProps) => {
                 {sidebarLinks.map((item) => {
                   const isActive =
                     pathname === item.route ||
-                    pathname.startsWith(`${item.route}`);
+                    pathname.startsWith(`${item.route}/`);
                   return (
                     <SheetClose asChild key={item.route}>
                       <Link
@@ -83,7 +84,7 @@ const MobileNav = ({ user }: MobileNavProps) => {
                     </SheetClose>
                   );
                 })}
-                USER
+                <PlaidLink user={user} />
               </nav>
             </SheetClose>
             <Footer user={user} type="mobile" />

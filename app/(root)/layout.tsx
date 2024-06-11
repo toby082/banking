@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import MobileNav from '@/components/MobileNav';
 import Sidebar from '@/components/Sidebar';
 import { getLoggedInUser } from '@/lib/actions/user.actions';
@@ -5,6 +7,7 @@ import type { Metadata } from 'next';
 import { Inter, IBM_Plex_Serif } from 'next/font/google';
 import Image from 'next/image';
 import { redirect, useRouter } from 'next/navigation';
+import { Toaster } from '@/components/ui/toaster';
 
 export default async function RootLayout({
   children,
@@ -17,17 +20,25 @@ export default async function RootLayout({
     redirect('/sign-in');
   }
   return (
-    <main className="flex h-screen w-full font-inter">
-      <Sidebar user={loggedIn} />
-      <div className="flex size-full flex-col">
-        <div className="root-layout">
-          <Image src="/icons/logo.svg" width={30} height={30} alt="menu icon" />
-          <div>
-            <MobileNav user={loggedIn} />
+    <>
+      <main className="flex h-screen w-full font-inter">
+        <Sidebar user={loggedIn} />
+        <div className="flex size-full flex-col">
+          <div className="root-layout">
+            <Image
+              src="/icons/logo.svg"
+              width={30}
+              height={30}
+              alt="menu icon"
+            />
+            <div>
+              <MobileNav user={loggedIn} />
+            </div>
           </div>
+          {children}
         </div>
-        {children}
-      </div>
-    </main>
+      </main>
+      <Toaster />
+    </>
   );
 }

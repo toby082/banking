@@ -70,7 +70,7 @@ const AuthForm = ({ type }: { type: string }) => {
           email: data.email,
           password: data.password,
         });
-        
+
         if (response) {
           router.push('/');
         }
@@ -92,10 +92,10 @@ const AuthForm = ({ type }: { type: string }) => {
             src="/icons/logo.svg"
             width={34}
             height={34}
-            alt="Horizon logo"
+            alt="T-Bank logo"
           ></Image>
           <h1 className="text-26 font-ibm-plex-serif font-bold text-black-1">
-            Horizon
+            T-Bank
           </h1>
         </Link>
         <div className="flex flex-col gap-1 md:gap-3">
